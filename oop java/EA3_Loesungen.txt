@@ -1,0 +1,83 @@
+Nicolai Schönberg, 9314806
+
+Aufgabe 1
+
+a)
+
+Sei folgnder Index für die Knoten gegeben: Frankreich = 0, Deutschland = 1, Spanien = 2
+Sei a die zugehörige Adjazenzmatrix.
+
+a[0][0] = false;  // Frankreich -> Frankreich
+a[0][1] = true;   // Frankreich -> Deutschland
+a[0][2] = true;   // Frankreich -> Spanien
+a[1][0] = true;   // Deutschland -> Frankreich
+a[1][1] = false;  // Deutschland -> Deutschland
+a[1][2] = false;  // Deutschland -> Spanien
+a[2][0] = true;   // Spanien -> Frankreich
+a[2][1] = false;  // Spanien -> Deutschland
+a[2][2] = false;  // Spanien -> Spanien
+
+
+b)
+
+public void setNodes(String[] nodes) {
+	// ...weist den ersten k Elementen des Attributs nodes die
+	// entsprechenden Werte des Parameters nodes zu. k ist dabei das
+	// Minimum aus der Laenge des Attributs und des Parameters.
+	int length = nodes.length;
+	if (length > this.nodes.length) {
+		length = this.nodes.length;
+	}
+	
+	for (int i = 0; i < length; i++) {
+		this.nodes[i] = nodes[i];
+	}
+}
+
+public boolean isAdjacent(int index1, int index2) throws GraphException {
+	// ...liefert "wahr", wenn die Knoten mit Index
+	// index1 und index2 benachbart sind, sonst "falsch".
+	return adjacencyMatrix[index1][index2] && adjacencyMatrix[index2][index1];
+}
+
+public boolean isAdjacent(String node1, String node2) throws GraphException {
+	// ...liefert "wahr", wenn die Laender mit Namen
+	// node1 und node2 benachbart sind, sonst "falsch".
+	return isAdjacent(indexOf(node1), indexOf(node2));
+}
+
+public void addEdge(int index1, int index2) throws GraphException {
+	// ...fuegt Kante zwischen den Knoten mit
+	// Index index1 und index2 ein, wenn diese
+	// Indizes von Laendern sind; sonst eine GraphException.
+	if (index1 < nodes.length 
+		&& index2 < nodes.length
+		&& nodes[index1] != null
+		&& nodes[index2] != null) {
+		adjacencyMatrix[index1][index2] = true;
+		adjacencyMatrix[index2][index1] = true;
+	}
+	else {
+		throw new GraphException();
+	}
+}
+
+public void addEdge(String node1, String node2) throws GraphException {
+	// ...fuegt Kante zwischen den Knoten mit
+	// Laendernamen node1 und node2 ein, wenn diese
+	// Knoten des Graphen bezeichnen; sonst eine GraphException.
+	addEdge(indexOf(node1), indexOf(node2));
+}
+
+
+c)
+
+Die Exception wird immer dann ausgelöst, wenn die Bedingung "if (node.equals(nodes[i])" innerhalb 
+der for Schleife zu true ausgewertet wird. Anders gesagt: Wenn kein Knoten im array node dem
+Suchwert entspricht. Die Methode wird dann nämlich nicht durch die Zeile "return i" verlassen,
+sodern es wird throw new GraphException(); ausgeführt sobald das array nodes komplett durchlaufen
+wurde.
+
+
+
+
